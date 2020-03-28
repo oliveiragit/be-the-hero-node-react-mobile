@@ -25,6 +25,15 @@ const ongController = {
         });
         return res.json({id});
     },
+    delete: async (req, res) =>{
+        const {id} = req.body;
+        try{
+            await connection('ongs').where('id', id).delete();
+            return res.status(201).send();
+        }catch(e){
+            return res.status(400).json({erro: 'delete fails'})
+        }
+    }
 }
 
 module.exports = ongController;

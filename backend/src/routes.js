@@ -18,8 +18,8 @@ routes.get('/', (req,res)=> {
 routes.post('/sessions', sessionController.create);
 
 routes.get('/ongs', ongController.index);
-
 routes.post('/ongs', ongController.create);
+routes.delete('/ongs', ongController.delete)
     
 routes.get( '/incidents', incidentController.index);
 routes.post('/incidents', incidentController.create);

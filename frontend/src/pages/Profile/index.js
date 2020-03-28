@@ -1,21 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 
 import "./styles.css";
-
+import api from '../../services/api';
 
 import logoImg from '../../assets/logo.svg';
 
 export default function Profile(){
+    const history = useHistory();
+
+    const ongName = localStorage.getItem('ongName');
+    const ongId = localStorage.getItem('ongId');
+    const [incidents, setIncidents] = useState([]);
+
+    useEffect( ()=> {
+        espera();
+        async function espera () {
+            const response = await api.get('profile', {
+                headers:{
+                    Authorization: ongId,
+                }
+            });
+            setIncidents(response.data);
+        }
+    }, [ongId]);
+    
+    async function handlerDelete(id){
+        try{
+           await api.delete(`incidents/${id}`, {
+                    headers:{
+                        Authorization: ongId,
+                    }
+                });
+            setIncidents(incidents.filter(incident => incident.id !== id));
+
+           }catch(err){
+               alert('Falha ao deletar caso');
+           }
+        }
+
+    function handlerLogout() {
+        localStorage.clear();
+        history.push('/');
+    }
     return (
         <div className="profile-container">
             <header>
                 <img src={logoImg} alt="Be the Hero Logo" />
-                <span>Bem vindo, APAD</span>
+                <span>Bem vindo, {ongName}</span>
                
                 <Link to="/incidents/new"className="button">Cadastrar novo caso</Link>
-                <button type="button">
+                <button onClick={handlerLogout} type="button">
                     <FiPower size={18} color ="#E02041" />
                 </button>
             </header>
@@ -23,89 +59,26 @@ export default function Profile(){
             <h1>Casos Cadastrados</h1>
                
             <ul>
-                <li>
+                {incidents.map(
+                    incident => (
+                    <li key={incident.id}>
                     <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
+                    <p>{incident.title}</p>
 
 
                     <strong>DESCRIÇÃO: </strong>
-                    <p>Descrição FAKE</p>
+                    <p>{incident.description}</p>
 
 
                     <strong>VALOR: </strong>
-                    <p>129.00 FAKE</p>
+                    <p>{Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(incident.value)}</p>
 
-
-                    <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
-
-                    <button type="button">
+                    <button type="button" onClick={() => handlerDelete(incident.id)}>
                         <FiTrash2  size={20} color="#a8a8b3" />
                     </button>
                 </li>
-
-                <li>
-                    <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
-
-
-                    <strong>DESCRIÇÃO: </strong>
-                    <p>Descrição FAKE</p>
-
-
-                    <strong>VALOR: </strong>
-                    <p>129.00 FAKE</p>
-
-
-                    <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
-
-                    <button type="button">
-                        <FiTrash2  size={20} color="#a8a8b3" />
-                    </button>
-                </li>
-
-                <li>
-                    <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
-
-
-                    <strong>DESCRIÇÃO: </strong>
-                    <p>Descrição FAKE</p>
-
-
-                    <strong>VALOR: </strong>
-                    <p>129.00 FAKE</p>
-
-
-                    <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
-
-                    <button type="button">
-                        <FiTrash2  size={20} color="#a8a8b3" />
-                    </button>
-                </li>
-
-                <li>
-                    <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
-
-
-                    <strong>DESCRIÇÃO: </strong>
-                    <p>Descrição FAKE</p>
-
-
-                    <strong>VALOR: </strong>
-                    <p>129.00 FAKE</p>
-
-
-                    <strong>CASO: </strong>
-                    <p>Caso FAKE</p>
-
-                    <button type="button">
-                        <FiTrash2  size={20} color="#a8a8b3" />
-                    </button>
-                </li>
+                ))}
+               
             </ul>
         </div>
     );

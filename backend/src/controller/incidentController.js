@@ -43,7 +43,7 @@ module.exports = {
         const caso = await connection('incidents').where('id', id).first();
 
         if (caso.ong_id != ong_id){
-            return res.json({error: 'Operation not permitted'})
+            return res.status(401).json({error: 'Operation not permitted'})
         }
         
         await connection('incidents').where("id",id).delete();
