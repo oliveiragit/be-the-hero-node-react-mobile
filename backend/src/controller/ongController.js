@@ -1,6 +1,6 @@
 const connection = require('../database/connection');
 
-const crypto = require('crypto');
+const generateUniqueId = require('../utils/generateUniqueId')
 
 const ongController = {
     
@@ -13,8 +13,8 @@ const ongController = {
      create: async (req, res) => {
         const {name, email, whatsapp, city, uf} = req.body;
     
-        const id = crypto.randomBytes(4).toString('HEX');
-    
+        const id = generateUniqueId();
+        
         await connection('ongs').insert({
             id,
             name,
@@ -27,11 +27,25 @@ const ongController = {
     },
     delete: async (req, res) =>{
         const {id} = req.body;
+        const {authorization} = req.headers;
+
         try{
-            await connection('ongs').where('id', id).delete();
+            if(id != authorization){
+                throw new Error('not have authorization');
+            }
+
+            const del = await connection('ongs').where('id',id).delete();
+
+            if(del===0)
+                return res.status(400).json({error: 'ong does\'t exist'});
+
             return res.status(201).send();
-        }catch(e){
-            return res.status(400).json({erro: 'delete fails'})
+
+        }
+        catch(err){
+            const [erro] = String(err).split('at delete')
+          
+            return res.status(400).json({erro: 'delete fails',erro});
         }
     }
 }

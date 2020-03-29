@@ -40,14 +40,17 @@ module.exports = {
         const {id} = req.params;
         const ong_id = req.headers.authorization;
 
-        const caso = await connection('incidents').where('id', id).first();
-
-        if (caso.ong_id != ong_id){
+        try{
+            const del= await connection('incidents').where({'id':id, 'ong_id':ong_id}).delete();
+           
+            if(del===0){
+                return res.status(400).json({error: 'incident/ong_id not found or not permitted'})
+            }
+       
+            res.status(204).send();
+        }
+        catch(err){
             return res.status(401).json({error: 'Operation not permitted'})
         }
-        
-        await connection('incidents').where("id",id).delete();
-
-        res.status(204).send();
     }
 }
