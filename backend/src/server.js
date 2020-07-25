@@ -1,3 +1,5 @@
-const app = require('./app');
+const app = require("./app");
 
-app.listen(process.env.PORT | 3333);
+var port = normalizePort(process.env.PORT || "3000");
+
+app.listen(port);
