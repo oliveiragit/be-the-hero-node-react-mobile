@@ -45,7 +45,7 @@ export default StyleSheet.create({
 
     heroDescription: {
         fontSize: 15,
-        color: 'u737380',
+        color: '#737380',
         marginTop: 16,
     },
 

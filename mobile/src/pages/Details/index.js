@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity, Text, Linking } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {Feather} from '@expo/vector-icons';
-//import * as MailComposer from 'expo-mail-composer';
+import * as MailComposer from 'expo-mail-composer';
 
 import logoImg from '../../assets/logo.png'
 import styles from './styles';
@@ -29,14 +29,14 @@ export default function Details () {
     }
     
      async function sendEmail(){
-       /*  MailComposer.composeAsync({
+        MailComposer.composeAsync({
             subject: `Herói do caso: ${incident.title}`,
             recipients: [incident.email],
             body: message
-        }); */
+        });
     } 
     function sendWhatsapp(){
-        Linking.openURL(`whatsapp://send?phone=${incident.whatsapp}&text=${message}`)
+        Linking.openURL(`whatsapp://send?phone=${"+55"+incident.whatsapp}&text=${message}`)
     }
 
     return(
@@ -71,11 +71,11 @@ export default function Details () {
             
                 <View style={styles.actions}>
 
-                    <TouchableOpacity style={styles.action} onPress={sendEmail}>
+                    <TouchableOpacity style={styles.action} onPress={sendWhatsapp}>
                         <Text style ={styles.actionText}>WhatsApp</Text>
                     </TouchableOpacity>
                     
-                    <TouchableOpacity style={styles.action} onPress={sendWhatsapp}>
+                    <TouchableOpacity style={styles.action} onPress={sendEmail}>
                         <Text style={styles.actionText}>E-mail</Text>
                     </TouchableOpacity>
                 </View>

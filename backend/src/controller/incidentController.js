@@ -7,12 +7,12 @@ module.exports = {
        const [count] = await connection('incidents').count();
 
        const incidents = await connection('incidents')
-       .join('ongs', 'ongs.id', '=', 'ong_id')
-       .limit(5)
-       .select(['incidents.*', 'ongs.name', 'ongs.email', 'ongs.whatsapp', 'ongs.city', 'ongs.uf'])
-       .offset((page - 1) * 5);
+        .join('ongs', 'ongs.id', '=', 'ong_id')
+        .limit(5)
+        .select(['incidents.*', 'ongs.name', 'ongs.email', 'ongs.whatsapp', 'ongs.city', 'ongs.uf'])
+        .offset((page - 1) * 5);
 
-       res.header('X-Total-Count', count['count(*)']);
+        res.header('X-Total-Count', count['count(*)']);
 
        return res.json(incidents);
    },
