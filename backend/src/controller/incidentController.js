@@ -1,56 +1,62 @@
-const connection = require('../database/connection');
+const connection = require("../database/connection");
 
 module.exports = {
-   async index(req, res) {
-       const {page = 1} = req.query;
-       
-       const [count] = await connection('incidents').count();
+  async index(req, res) {
+    const { page = 1 } = req.query;
 
-       const incidents = await connection('incidents')
-        .join('ongs', 'ongs.id', '=', 'ong_id')
-        .limit(5)
-        .select(['incidents.*', 'ongs.name', 'ongs.email', 'ongs.whatsapp', 'ongs.city', 'ongs.uf'])
-        .offset((page - 1) * 5);
+    const [count] = await connection("incidents").count();
 
-        res.header('X-Total-Count', count['count(*)']);
+    const incidents = await connection("incidents")
+      .join("ongs", "ongs.id", "=", "ong_id")
+      .limit(5)
+      .select([
+        "incidents.*",
+        "ongs.name",
+        "ongs.email",
+        "ongs.whatsapp",
+        "ongs.city",
+        "ongs.uf",
+      ])
+      .offset((page - 1) * 5);
 
-       return res.json(incidents);
-   },
-   
-   
-   
-    async create(req, res) {
-        const {title, description, value} = req.body;
-        const ong_id = req.headers.authorization;
-        if(!ong_id){
-            return res.json({error: 'You need ong authorization'});
-        }
+    res.header("X-Total-Count", count["count(*)"]);
 
-        const [id] = await connection('incidents').insert({
-            title,
-            description,
-            value,
-            ong_id,
-        })
-        
-        return res.json({id});
-    },
+    return res.json(incidents);
+  },
 
-    async delete(req,res){
-        const {id} = req.params;
-        const ong_id = req.headers.authorization;
+  async create(req, res) {
+    const { title, description, value } = req.body;
+    const ong_id = req.ongId;
+    console.log(ong_id);
 
-        try{
-            const del= await connection('incidents').where({'id':id, 'ong_id':ong_id}).delete();
-           
-            if(del===0){
-                return res.status(400).json({error: 'incident/ong_id not found or not permitted'})
-            }
-       
-            res.status(204).send();
-        }
-        catch(err){
-            return res.status(401).json({error: 'Operation not permitted'})
-        }
+    const [id] = await connection("incidents").insert({
+      title,
+      description,
+      value,
+      ong_id,
+    });
+
+    return res.json({ id });
+  },
+
+  async delete(req, res) {
+    const { id } = req.params;
+    const ong_id = req.ongId;
+
+    try {
+      const del = await connection("incidents")
+        .where({ id: id, ong_id: ong_id })
+        .delete();
+
+      if (del === 0) {
+        return res
+          .status(400)
+          .json({ error: "incident/ong_id not found or not permitted" });
+      }
+
+      res.status(204).send();
+    } catch (err) {
+      return res.status(401).json({ error: "Operation not permitted" });
     }
-}
+  },
+};

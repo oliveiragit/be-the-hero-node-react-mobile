@@ -7,6 +7,8 @@ const incidentController = require('./controller/incidentController');
 const profileController =  require('./controller/profileController');
 const sessionController = require('./controller/sessionController');
 
+const session = require('./middlewares/session')
+
 const routes = express.Router();
 
 routes.get('/', (req,res)=> {
@@ -22,9 +24,15 @@ routes.post('/sessions', sessionController.create);
 
 routes.get('/ongs', ongController.index);
 routes.post('/ongs', validation.postOngs , ongController.create);
+
+routes.get( '/incidents', validation.getIncidents, incidentController.index);
+
+
+routes.use(session);
+
 routes.delete('/ongs', validation.deleteOngs, ongController.delete)
     
-routes.get( '/incidents', validation.getIncidents, incidentController.index);
+
 routes.post('/incidents', validation.postIncidents, incidentController.create);
 routes.delete('/incidents/:id', validation.deleteIncidents, incidentController.delete);
 

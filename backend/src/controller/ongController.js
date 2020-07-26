@@ -1,53 +1,49 @@
-const connection = require('../database/connection');
+const connection = require("../database/connection");
 
-const generateUniqueId = require('../utils/generateUniqueId')
+const generateUniqueId = require("../utils/generateUniqueId");
 
 const ongController = {
-    
-    index: async (req,res) => {
-        const ongs = await connection.select('*').from('ongs');
+  index: async (req, res) => {
+    const ongs = await connection.select("*").from("ongs");
 
-        return res.json(ongs);
-    },
+    return res.json(ongs);
+  },
 
-     create: async (req, res) => {
-        const {name, email, whatsapp, city, uf} = req.body;
-    
-        const id = generateUniqueId();
-        
-        await connection('ongs').insert({
-            id,
-            name,
-            email,
-            whatsapp,
-            city,
-            uf,
-        });
-        return res.json({id});
-    },
-    delete: async (req, res) =>{
-        const {id} = req.body;
-        const {authorization} = req.headers;
+  create: async (req, res) => {
+    const { name, email, whatsapp, city, uf } = req.body;
 
-        try{
-            if(id != authorization){
-                throw new Error('not have authorization');
-            }
+    const id = generateUniqueId();
 
-            const del = await connection('ongs').where('id',id).delete();
+    await connection("ongs").insert({
+      id,
+      name,
+      email,
+      whatsapp,
+      city,
+      uf,
+    });
+    return res.json({ id });
+  },
+  delete: async (req, res) => {
+    const { id } = req.body;
+    const { ongId } = req;
 
-            if(del===0)
-                return res.status(400).json({error: 'ong does\'t exist'});
+    try {
+      if (id != ongId) {
+        throw new Error("not have ongId");
+      }
 
-            return res.status(201).send();
+      const del = await connection("ongs").where("id", id).delete();
 
-        }
-        catch(err){
-            const [erro] = String(err).split('at delete')
-          
-            return res.status(400).json({erro: 'delete fails',erro});
-        }
+      if (del === 0) return res.status(400).json({ error: "ong does't exist" });
+
+      return res.status(201).send();
+    } catch (err) {
+      const [error] = String(err).split("at delete");
+
+      return res.status(400).json({ error: "delete fails", error });
     }
-}
+  },
+};
 
 module.exports = ongController;
