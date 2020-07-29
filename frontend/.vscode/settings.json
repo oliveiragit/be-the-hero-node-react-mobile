@@ -1,0 +1,8 @@
+{
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/593e240b-566a-44af-9a04-ed8da1bb1a04/resourceGroups/heroes/providers/Microsoft.Web/sites/bethehero",
+  "appService.deploySubpath": "build"
+}

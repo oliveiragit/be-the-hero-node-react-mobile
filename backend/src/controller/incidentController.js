@@ -26,17 +26,18 @@ module.exports = {
 
   async create(req, res) {
     const { title, description, value } = req.body;
+    const formatValue = String(value).replace(',',('.'))
+    
     const ong_id = req.ongId;
-    console.log(ong_id);
-
+    
     const [id] = await connection("incidents").insert({
       title,
       description,
-      value,
+      value: formatValue,
       ong_id,
-    });
-
-    return res.json({ id });
+    }).returning('id');
+    
+    return res.json(id);
   },
 
   async delete(req, res) {
