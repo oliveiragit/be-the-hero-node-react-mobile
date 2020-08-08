@@ -1,6 +1,6 @@
 <h1># be-the-hero-node-react</h1>
 
-<img src="/frontend/src/assets/logo.png" alt="logo" />
+<img src="/frontend/src/assets/logo.svg" alt="logo" />
 
 Aplicação desenvolvida na semana omnistack 11 da ROCKETSEAT
 
