@@ -1,5 +1,8 @@
 <h1># be-the-hero-node-react</h1>
 
+![GitHub Logo](/frontend/src/assets/logo.png)
+Format: ![Alt Text](url)
+
 Aplicação desenvolvida na semana omnistack 11 da ROCKETSEAT
 
 Consiste em: <br />
@@ -11,8 +14,7 @@ DEPLOY
   FRONTEND https://bethehero.azurewebsites.net/
 
   BACKEND e banco de dados (postgreSQL) no HEROKU <br />
-  <img src="https://bethehero.azurewebsites.net/static/media/logo.7eea718b.svg" />
-
-<img src="https://bethehero.azurewebsites.net/static/media/heroes.1f4b5508.png" />
+  
+  <img src="/frontend/src/assets/heroes.png" />
 
 Dev: Bruno de Oliveira
