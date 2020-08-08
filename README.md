@@ -2,7 +2,7 @@
 <a href="https://bethehero.azurewebsites.net/">
   <img src="/frontend/src/assets/logo.svg" alt="logo" />
 </a>
-Aplicação desenvolvida na semana omnistack 11 da ROCKETSEAT
+<br />Aplicação desenvolvida na semana omnistack 11 da ROCKETSEAT
 
 Consiste em: <br />
   backend em NodeJS <br />
