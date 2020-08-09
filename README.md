@@ -18,4 +18,5 @@ DEPLOY
   </a>
 
 Dev: Bruno de Oliveira
-http://brunosilva.dev.br
+
+https://www.linkedin.com/in/bruno-de-oliveira-silva/
