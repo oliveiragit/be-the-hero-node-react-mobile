@@ -60,7 +60,7 @@ form textarea{
     filter: brightness(90%);
 
 }
-.navegation-link{
+a {
     display: flex;
     align-items: center;
     margin-top: 40px;
@@ -70,10 +70,10 @@ form textarea{
     font-weight: 500;
     transition: opacity 0.2s;
 }
-.navegation-link:hover{
+a:hover{
     opacity: 0.8;
 }
 
-.navegation-link svg{
+a svg{
     margin-right: 8px;
 }

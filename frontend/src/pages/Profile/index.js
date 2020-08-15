@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { FiPower, FiTrash2 } from "react-icons/fi";
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { FiPower, FiTrash2 } from 'react-icons/fi';
 
-import "./styles.css";
-import api from "../../services/api";
+import './styles.css';
+import api from '../../services/api';
 
-import logoImg from "../../assets/logo.svg";
+import logoImg from '../../assets/logo.svg';
 
 export default function Profile() {
   const history = useHistory();
 
-  const ongName = localStorage.getItem("ongName");
-  const ongId = localStorage.getItem("ongId");
+  const ongName = localStorage.getItem('ongName');
+  const ongId = localStorage.getItem('ongId');
   const [incidents, setIncidents] = useState([]);
 
-  if (!localStorage.getItem("ongId")) {
-    history.push("/");
+  if (!localStorage.getItem('ongId')) {
+    history.push('/');
   }
 
   useEffect(() => {
-    espera();
     async function espera() {
-      const response = await api.get("profile", {
+      const response = await api.get('profile', {
         headers: {
           Authorization: ongId,
         },
       });
       setIncidents(response.data);
     }
+    espera();
   }, [ongId]);
 
   async function handlerDelete(id) {
@@ -39,13 +39,13 @@ export default function Profile() {
       });
       setIncidents(incidents.filter((incident) => incident.id !== id));
     } catch (err) {
-      alert("Falha ao deletar caso");
+      alert('Falha ao deletar caso');
     }
   }
 
   function handlerLogout() {
     localStorage.clear();
-    history.push("/");
+    history.push('/');
   }
   return (
     <div className="profile-container">
@@ -74,9 +74,9 @@ export default function Profile() {
 
             <strong>VALOR: </strong>
             <p>
-              {Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
+              {Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
               }).format(incident.value)}
             </p>
 
